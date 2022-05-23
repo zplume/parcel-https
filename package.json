@@ -1,0 +1,31 @@
+{
+  "name": "parcel-https",
+  "version": "1.0.0",
+  "description": "Scripts etc to serve localhost on HTTPS with parcel.",
+  "references": [
+    "https://docs.microsoft.com/en-us/dotnet/core/additional-tools/self-signed-certificates-guide",
+    "https://github.com/Dexus/pem/blob/master/lib/convert.js",
+    "https://stackoverflow.com/a/42893628"
+  ],
+  "scripts": {
+    "start": "env-cmd -x parcel $ENTRYPOINT --https --cert $CERT_PEM --key $CERT_KEY --port $PORT --open",
+    "build": "env-cmd -x parcel build $ENTRYPOINT",
+    "dev-certs": "run-s dev-certs:create dev-certs:convert",
+    "dev-certs:create": "env-cmd -x dotnet dev-certs https -ep $CERT_PFX -p $CERT_PASSWORD --verbose --trust",
+    "dev-certs:convert": "node ./cli/cert.mjs",
+    "dev-certs:clean": "dotnet dev-certs https --clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Leo Siddle",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/pem": "^1.9.6",
+    "env-cmd": "^10.1.0",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^2.5.0",
+    "pem": "^1.14.6"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1"
+  }
+}
